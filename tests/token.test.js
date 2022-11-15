@@ -56,7 +56,7 @@ describe("token", () => {
   it("can transfer tokens", async () => {
     expect.assertions(1);
 
-    await tester.contract.transfer(
+    let res = await tester.contract.transfer(
       {
         from: user1.accountName,
         to: user2.accountName,
@@ -65,6 +65,8 @@ describe("token", () => {
       },
       [{ actor: user1.accountName, permission: `active` }]
     );
+
+    console.log("response:", res.action_traces[0].console.split("\n"));
 
     expect(tester.getTableRowsScoped(`accounts`)).toEqual({
       user1: [{ balance: "5.0000 EOS" }],
@@ -78,7 +80,7 @@ describe("token", () => {
     tester.resetTables();
     await tester.loadFixtures();
 
-    await tester.contract.transfer(
+    let res = await tester.contract.transfer(
       {
         from: user1.accountName,
         to: user2.accountName,
@@ -87,6 +89,8 @@ describe("token", () => {
       },
       [{ actor: user1.accountName, permission: `active` }]
     );
+
+    console.log("response:", res.action_traces[0].console.split("\n"));
 
     expect(tester.getTableRowsScoped(`accounts`)).toEqual({
       user1: [{ balance: "1.0000 EOS" }],
